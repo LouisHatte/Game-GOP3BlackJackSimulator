@@ -1,59 +1,86 @@
+#include <string.h>
+#include <stdlib.h>
+
 #include "deck.h"
+#include "person.h"
+#include "game.h"
 
-const deck_s  DECK = {
-    .cards[0] = { .color = "heart  ", .name = "ace  ", .value = 11 },
-    .cards[1] = { .color = "heart  ", .name = "two  ", .value = 2 },
-    .cards[2] = { .color = "heart  ", .name = "three", .value = 3 },
-    .cards[3] = { .color = "heart  ", .name = "four ", .value = 4 },
-    .cards[4] = { .color = "heart  ", .name = "five ", .value = 5 },
-    .cards[5] = { .color = "heart  ", .name = "six  ", .value = 6 },
-    .cards[6] = { .color = "heart  ", .name = "seven", .value = 7 },
-    .cards[7] = { .color = "heart  ", .name = "eight", .value = 8 },
-    .cards[8] = { .color = "heart  ", .name = "nine ", .value = 9 },
-    .cards[9] = { .color = "heart  ", .name = "ten  ", .value = 10 },
-    .cards[10] = { .color = "heart  ", .name = "jack ", .value = 10 },
-    .cards[11] = { .color = "heart  ", .name = "queen", .value = 10 },
-    .cards[12] = { .color = "heart  ", .name = "king ", .value = 10 },
+#include <stdio.h>
 
-    .cards[13] = { .color = "spade  ", .name = "ace  ", .value = 11 },
-    .cards[14] = { .color = "spade  ", .name = "two  ", .value = 2 },
-    .cards[15] = { .color = "spade  ", .name = "three", .value = 3 },
-    .cards[16] = { .color = "spade  ", .name = "four ", .value = 4 },
-    .cards[17] = { .color = "spade  ", .name = "five ", .value = 5 },
-    .cards[18] = { .color = "spade  ", .name = "six  ", .value = 6 },
-    .cards[19] = { .color = "spade  ", .name = "seven", .value = 7 },
-    .cards[20] = { .color = "spade  ", .name = "eight", .value = 8 },
-    .cards[21] = { .color = "spade  ", .name = "nine ", .value = 9 },
-    .cards[22] = { .color = "spade  ", .name = "ten  ", .value = 10 },
-    .cards[23] = { .color = "spade  ", .name = "jack ", .value = 10 },
-    .cards[24] = { .color = "spade  ", .name = "queen", .value = 10 },
-    .cards[25] = { .color = "spade  ", .name = "king ", .value = 10 },
+extern card_s CARDS[52];
 
-    .cards[26] = { .color = "club   ", .name = "ace  ", .value = 11 },
-    .cards[27] = { .color = "club   ", .name = "two  ", .value = 2 },
-    .cards[28] = { .color = "club   ", .name = "three", .value = 3 },
-    .cards[29] = { .color = "club   ", .name = "four ", .value = 4 },
-    .cards[30] = { .color = "club   ", .name = "five ", .value = 5 },
-    .cards[31] = { .color = "club   ", .name = "six  ", .value = 6 },
-    .cards[32] = { .color = "club   ", .name = "seven", .value = 7 },
-    .cards[33] = { .color = "club   ", .name = "eight", .value = 8 },
-    .cards[34] = { .color = "club   ", .name = "nine ", .value = 9 },
-    .cards[35] = { .color = "club   ", .name = "ten  ", .value = 10 },
-    .cards[36] = { .color = "club   ", .name = "jack ", .value = 10 },
-    .cards[37] = { .color = "club   ", .name = "queen", .value = 10 },
-    .cards[38] = { .color = "club   ", .name = "king ", .value = 10 },
+static void _shift_left_tab(uint8_t t[], uint8_t size, uint8_t idx) {
+    for (int i = idx; i < size - 1; i++) {
+        t[i] = t[i + 1];
+    }
+    t[size - 1] = 0;
+}
 
-    .cards[39] = { .color = "diamond", .name = "ace  ", .value = 11 },
-    .cards[40] = { .color = "diamond", .name = "two  ", .value = 2 },
-    .cards[41] = { .color = "diamond", .name = "three", .value = 3 },
-    .cards[42] = { .color = "diamond", .name = "four ", .value = 4 },
-    .cards[43] = { .color = "diamond", .name = "five ", .value = 5 },
-    .cards[44] = { .color = "diamond", .name = "six  ", .value = 6 },
-    .cards[45] = { .color = "diamond", .name = "seven", .value = 7 },
-    .cards[46] = { .color = "diamond", .name = "eight", .value = 8 },
-    .cards[47] = { .color = "diamond", .name = "nine ", .value = 9 },
-    .cards[48] = { .color = "diamond", .name = "ten  ", .value = 10 },
-    .cards[49] = { .color = "diamond", .name = "jack ", .value = 10 },
-    .cards[50] = { .color = "diamond", .name = "queen", .value = 10 },
-    .cards[51] = { .color = "diamond", .name = "king ", .value = 10 }
-};
+static void _shift_left_deck(card_s cards[], uint8_t size, uint8_t idx) {
+    for (int i = idx; i < size - 1; i++) {
+        memcpy(&(cards[i]), &(cards[i + 1]), sizeof(card_s));
+    }
+    memset(cards[size - 1].name, 0, sizeof(char) * NAME_LENGTH);
+    memset(cards[size - 1].color, 0, sizeof(char) * COLOR_LENGTH);
+    cards[size - 1].value = 0;
+}
+
+/*
+** Get a new deck of 312 cards.
+*/
+void    get_deck(deck_s* deck) {
+    card_s cards[NB_DECK_CARDS];
+    uint8_t cards_left[NB_DECK_CARDS];
+    uint8_t r = 0;
+    uint8_t size = NB_DECK_CARDS;
+
+    memset(cards_left, NB_deck_s, sizeof(uint8_t) * NB_DECK_CARDS);
+    memcpy(cards, &CARDS, sizeof(card_s) * NB_DECK_CARDS);
+
+    for (int i = 0; i < NB_BJ_CARDS; i++) {
+        r = rand() % size;
+        memcpy(&(deck->cards[i]), &(cards[r]), sizeof(card_s));
+        cards_left[r] -= 1;
+        if (cards_left[r] == 0) {
+            _shift_left_tab(cards_left, size, r);
+            _shift_left_deck(cards, size, r);
+            size -= 1;
+        }
+    }
+}
+
+/*
+** Pick a card from the deck and add it to
+** a hand then calculate new total.
+*/
+void    pick_card(deck_s* deck, void* person, const uint8_t* idx) {
+    if (!idx) {
+        memcpy(&(((dealer_s*) person)->hand[((dealer_s*) person)->nb_cards]), &(deck->cards[0]), sizeof(card_s));
+        _shift_left_deck(deck->cards, NB_DECK_CARDS, 0);
+        ((dealer_s*) person)->nb_cards += 1;
+        ((dealer_s*) person)->points = calculate_points(((dealer_s*) person)->hand, ((dealer_s*) person)->nb_cards);
+    } else {
+        memcpy(&(((player_s*) person)->hand[*idx][((player_s*) person)->nb_cards[*idx]]), &(deck->cards[0]), sizeof(card_s));
+        _shift_left_deck(deck->cards, NB_DECK_CARDS, 0);
+        ((player_s*) person)->nb_cards[*idx] += 1;
+        ((player_s*) person)->points[*idx] = calculate_points(((player_s*) person)->hand[*idx], ((player_s*) person)->nb_cards[*idx]);
+    }
+}
+
+uint8_t calculate_points(card_s hand[MAX_HAND_CARDS], uint8_t nb_cards) {
+    uint8_t nb_ace = 0;
+    uint8_t points = 0;
+
+    for (int i = 0; i < nb_cards; i++) {
+        points += hand[i].value;
+        if (hand[i].value == ACE) {
+            nb_ace++;
+        }
+    }
+    for (int i = 0; i < nb_ace; i++) {
+        if (points > BLACKJACK) {
+            points -= BLACKJACK - ONE;
+        }
+    }
+    return points;
+}

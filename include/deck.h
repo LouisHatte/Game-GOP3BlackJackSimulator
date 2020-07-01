@@ -6,8 +6,8 @@
 #define COLOR_LENGTH    8
 
 #define NB_DECK_CARDS   52
-#define NB_BJ_DECK      6
-#define NB_BJ_CARDS     (NB_DECK_CARDS * NB_BJ_DECK)
+#define NB_deck_s      6
+#define NB_BJ_CARDS     (NB_DECK_CARDS * NB_deck_s)
 
 #define MAX_HAND        2
 #define MAX_HAND_CARDS  11
@@ -19,12 +19,9 @@ typedef struct card {
 } card_s;
 
 typedef struct deck {
-    card_s  cards[NB_DECK_CARDS];
+    card_s cards[NB_BJ_CARDS];
 } deck_s;
 
-typedef struct bj_deck {
-    card_s  cards[NB_BJ_CARDS];
-} bj_deck_s;
-
-void    get_deck(bj_deck_s* deck);
-void    shift_left_bj_deck(bj_deck_s* deck, uint8_t size, uint8_t idx);
+void    get_deck(deck_s* deck);
+void    pick_card(deck_s* deck, void* person, const uint8_t* idx);
+uint8_t calculate_points(card_s hand[MAX_HAND_CARDS], uint8_t nb_cards);

@@ -5,24 +5,28 @@
 #include "deck.h"
 #include "person.h"
 #include "game.h"
+#include "action.h"
 
 #include <stdio.h>
 
 int main(void) {
-    bj_deck_s deck;
+    deck_s deck;
     player_s player;
     dealer_s dealer;
 
-    player.balance = 10000000;
+    // Set your initial player balance here
+    player.balance = 29000000;
 
     srand(time(NULL));
-    get_deck(&deck);
 
-    for (int i = 0; i < 15; i++) {
-        printf("%d: %s of %s: %d\n", i, deck.cards[i].name, deck.cards[i].color, deck.cards[i].value);
+    for (int i = 0; i < NB_GAME; i++) {
+        init_turn(&deck, &player, &dealer);
+        bet(&player);
+        player.balance -= player.bet;
+        distribute(&deck, &player, &dealer);
+        game_loop(&deck, &player, &dealer);
+        exit(0);
     }
-
-    game_loop(&deck, &player, &dealer);
 
     return 0;
 }
