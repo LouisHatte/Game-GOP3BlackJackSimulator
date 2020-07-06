@@ -2,18 +2,21 @@
 
 #include "person.h"
 #include "action.h"
+#include "choices.h"
 
 #define THRESHOLD   16
 
+extern uint8_t first_hand;
+extern uint8_t second_hand;
+
 void    bet(player_s* player) {
-    player->bet = 500000;
+    player->bet = 2;
 }
 
-bool    player_turn(deck_s* deck, player_s* player) {
+void    player_turn(deck_s* deck, player_s* player) {
     if (player->points[0] <= THRESHOLD) {
-        // double_bet()
-        // player_pick_card(deck, player, false);
-        return true;
+        pick_card(deck, player, &first_hand);
+    } else {
+        stand();
     }
-    return false;
 }

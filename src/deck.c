@@ -50,24 +50,9 @@ void    get_deck(deck_s* deck) {
 }
 
 /*
-** Pick a card from the deck and add it to
-** a hand then calculate new total.
+** Count Black Jack points.
 */
-void    pick_card(deck_s* deck, void* person, const uint8_t* idx) {
-    if (!idx) {
-        memcpy(&(((dealer_s*) person)->hand[((dealer_s*) person)->nb_cards]), &(deck->cards[0]), sizeof(card_s));
-        _shift_left_deck(deck->cards, NB_DECK_CARDS, 0);
-        ((dealer_s*) person)->nb_cards += 1;
-        ((dealer_s*) person)->points = calculate_points(((dealer_s*) person)->hand, ((dealer_s*) person)->nb_cards);
-    } else {
-        memcpy(&(((player_s*) person)->hand[*idx][((player_s*) person)->nb_cards[*idx]]), &(deck->cards[0]), sizeof(card_s));
-        _shift_left_deck(deck->cards, NB_DECK_CARDS, 0);
-        ((player_s*) person)->nb_cards[*idx] += 1;
-        ((player_s*) person)->points[*idx] = calculate_points(((player_s*) person)->hand[*idx], ((player_s*) person)->nb_cards[*idx]);
-    }
-}
-
-uint8_t calculate_points(card_s hand[MAX_HAND_CARDS], uint8_t nb_cards) {
+static uint8_t  _get_total(card_s hand[MAX_HAND_CARDS], uint8_t nb_cards) {
     uint8_t nb_ace = 0;
     uint8_t points = 0;
 
@@ -83,4 +68,22 @@ uint8_t calculate_points(card_s hand[MAX_HAND_CARDS], uint8_t nb_cards) {
         }
     }
     return points;
+}
+
+/*
+** Pick a card from the deck and add it to
+** a hand then calculate new Black Jack points.
+*/
+void    pick_card(deck_s* deck, void* person, const uint8_t* idx) {
+    if (!idx) {
+        memcpy(&(((dealer_s*) person)->hand[((dealer_s*) person)->nb_cards]), &(deck->cards[0]), sizeof(card_s));
+        _shift_left_deck(deck->cards, NB_DECK_CARDS, 0);
+        ((dealer_s*) person)->nb_cards += 1;
+        ((dealer_s*) person)->points = _get_total(((dealer_s*) person)->hand, ((dealer_s*) person)->nb_cards);
+    } else {
+        memcpy(&(((player_s*) person)->hand[*idx][((player_s*) person)->nb_cards[*idx]]), &(deck->cards[0]), sizeof(card_s));
+        _shift_left_deck(deck->cards, NB_DECK_CARDS, 0);
+        ((player_s*) person)->nb_cards[*idx] += 1;
+        ((player_s*) person)->points[*idx] = _get_total(((player_s*) person)->hand[*idx], ((player_s*) person)->nb_cards[*idx]);
+    }
 }

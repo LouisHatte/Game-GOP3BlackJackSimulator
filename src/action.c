@@ -7,9 +7,12 @@
 #include "game.h"
 #include "print.h"
 #include "deck.h"
+#include "game.h"
 
-static const uint8_t first_hand = 0;
-static const uint8_t second_hand = 1;
+const uint8_t first_hand = 0;
+const uint8_t second_hand = 1;
+
+extern card_s CARDS[52];
 
 /*
 ** Initializes a new Black Jack game turn
@@ -22,8 +25,8 @@ void    init_turn(deck_s* deck, player_s* player, dealer_s* dealer) {
     }
     memset(player->nb_cards, 0, sizeof(uint8_t) * MAX_HAND);
     memset(player->points, 0, sizeof(uint8_t) * MAX_HAND);
-    player->splited = false;
-    player->doubled = false;
+    // player->splited = false;
+    // player->doubled = false;
     player->bet = 0;
 
     memset(dealer, 0, sizeof(dealer_s));
@@ -42,34 +45,91 @@ void    init_turn(deck_s* deck, player_s* player, dealer_s* dealer) {
 ** to dealer one by one starting by player.
 */
 void    distribute(deck_s* deck, player_s* player, dealer_s* dealer) {
-    pick_card(deck, player, &first_hand);
-    pick_card(deck, dealer, NULL);
-    pick_card(deck, player, &first_hand);
-    pick_card(deck, dealer, NULL);
+    // pick_card(deck, player, &first_hand);
+    // pick_card(deck, dealer, NULL);
+    // pick_card(deck, player, &first_hand);
+    // pick_card(deck, dealer, NULL);
 
     // TO DELETE
-    printf("%s of %s: %d\n", player->hand[0][0].name, player->hand[0][0].color, player->hand[0][0].value);
-    printf("%s of %s: %d\n", dealer->hand[0].name, dealer->hand[0].color, dealer->hand[0].value);
-    printf("%s of %s: %d\n", player->hand[0][1].name, player->hand[0][1].color, player->hand[0][1].value);
-    printf("%s of %s: %d\n", dealer->hand[1].name, dealer->hand[1].color, dealer->hand[1].value);
-    printf("\n");
+
+    // P BJ D 20
+    // memcpy(&(player->hand[0][0]), &(CARDS[0]), sizeof(card_s));
+    // memcpy(&(player->hand[0][1]), &(CARDS[10]), sizeof(card_s));
+    // player->nb_cards[0] = 2;
+    // player->points[0] = CARDS[0].value + CARDS[10].value;
+    // memcpy(&(dealer->hand[0]), &(CARDS[11]), sizeof(card_s));
+    // memcpy(&(dealer->hand[1]), &(CARDS[12]), sizeof(card_s));
+    // dealer->nb_cards = 2;
+    // dealer->points = CARDS[11].value + CARDS[12].value;
+
+    // P 20 D BJ
+    // memcpy(&(player->hand[0][0]), &(CARDS[11]), sizeof(card_s));
+    // memcpy(&(player->hand[0][1]), &(CARDS[12]), sizeof(card_s));
+    // player->nb_cards[0] = 2;
+    // player->points[0] = CARDS[11].value + CARDS[12].value;
+    // memcpy(&(dealer->hand[0]), &(CARDS[0]), sizeof(card_s));
+    // memcpy(&(dealer->hand[1]), &(CARDS[10]), sizeof(card_s));
+    // dealer->nb_cards = 2;
+    // dealer->points = CARDS[0].value + CARDS[10].value;
+
+    // P 20 D 20
+    // memcpy(&(player->hand[0][0]), &(CARDS[11]), sizeof(card_s));
+    // memcpy(&(player->hand[0][1]), &(CARDS[12]), sizeof(card_s));
+    // player->nb_cards[0] = 2;
+    // player->points[0] = CARDS[11].value + CARDS[12].value;
+    // memcpy(&(dealer->hand[0]), &(CARDS[11]), sizeof(card_s));
+    // memcpy(&(dealer->hand[1]), &(CARDS[10]), sizeof(card_s));
+    // dealer->nb_cards = 2;
+    // dealer->points = CARDS[11].value + CARDS[10].value;
+
+    // P 15 D 20
+    // memcpy(&(player->hand[0][0]), &(CARDS[11]), sizeof(card_s));
+    // memcpy(&(player->hand[0][1]), &(CARDS[4]), sizeof(card_s));
+    // player->nb_cards[0] = 2;
+    // player->points[0] = CARDS[11].value + CARDS[4].value;
+    // memcpy(&(dealer->hand[0]), &(CARDS[11]), sizeof(card_s));
+    // memcpy(&(dealer->hand[1]), &(CARDS[10]), sizeof(card_s));
+    // dealer->nb_cards = 2;
+    // dealer->points = CARDS[11].value + CARDS[10].value;
+
+    // P 20 D 15
+    memcpy(&(player->hand[0][0]), &(CARDS[11]), sizeof(card_s));
+    memcpy(&(player->hand[0][1]), &(CARDS[12]), sizeof(card_s));
+    player->nb_cards[0] = 2;
+    player->points[0] = CARDS[11].value + CARDS[12].value;
+    memcpy(&(dealer->hand[0]), &(CARDS[11]), sizeof(card_s));
+    memcpy(&(dealer->hand[1]), &(CARDS[4]), sizeof(card_s));
+    dealer->nb_cards = 2;
+    dealer->points = CARDS[11].value + CARDS[4].value;
+
+
     // END
 
-
-    #ifdef  SHOW_PRINT
-    show_hands(player, dealer, true);
-    #endif
+    show_hands(player, dealer, false);
 }
 
-// void    split(deck_s* deck, player_s* player) {
-//     memcpy(&(player->hand[1][0]), &(player->hand[0][1]), sizeof(card_s) * MAX_HAND_CARDS);
-//     memset(&(player->hand[0][1]), 0, sizeof(card_s) * MAX_HAND_CARDS);
-//     player->splited = true;
-// }
+void    announce_results(player_s* player, dealer_s* dealer) {
+    show_hands(player, dealer, true);
 
-// void    double_bet(deck_s* deck, player_s* player) {
-//     player->balance -= player->bet;
-//     player->bet *= 2;
-//     player_pick_card(deck, player, false);
-//     player->doubled = true;
-// }
+    if (player->hand[0][0].value + player->hand[0][1].value == BLACKJACK) {
+        player->balance += player->bet * 2.5;
+        blackjack_player();
+    } else if (player->points[0] > BLACKJACK) {
+        burst_player();
+    } else if (dealer->hand[0].value + dealer->hand[1].value == BLACKJACK) {
+        blackjack_dealer();
+    } else if (dealer->points > BLACKJACK) {
+        player->balance += player->bet * 2;
+        burst_dealer();
+    } else if (player->points[0] == dealer->points) {
+        player->balance += player->bet;
+        push();
+    } else if (player->points[0] > dealer->points) {
+        player->balance += player->bet * 2;
+        player_win();
+    } else {
+        player_lose();
+    }
+
+    printf("Balance: %ld\n", player->balance);
+}

@@ -15,7 +15,7 @@ int main(void) {
     dealer_s dealer;
 
     // Set your initial player balance here
-    player.balance = 29000000;
+    player.balance = 10;
 
     srand(time(NULL));
 
@@ -24,7 +24,8 @@ int main(void) {
         bet(&player);
         player.balance -= player.bet;
         distribute(&deck, &player, &dealer);
-        game_loop(&deck, &player, &dealer);
+        play_turn(&deck, &player, &dealer);
+        announce_results(&player, &dealer);
         exit(0);
     }
 

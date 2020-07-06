@@ -24,4 +24,3 @@ typedef struct deck {
 
 void    get_deck(deck_s* deck);
 void    pick_card(deck_s* deck, void* person, const uint8_t* idx);
-uint8_t calculate_points(card_s hand[MAX_HAND_CARDS], uint8_t nb_cards);

@@ -1,56 +1,84 @@
 #include "person.h"
+#include "print.h"
+#include "game.h"
 
 #include <stdio.h>
 
-void    show_hands(player_s* player, dealer_s* dealer, bool hide_dealer_card) {
-    uint8_t player_nb_cards = player->nb_cards[0] + player->nb_cards[1];
-    uint8_t highest = (dealer->nb_cards >= player_nb_cards) ? dealer->nb_cards : player_nb_cards;
-    bool flag = false;
-    uint8_t j = 0;
+void    _print_card(card_s card) {
+    printf("    %s of %s: %d\n", card.name, card.color, card.value);
+}
 
-    printf("%d\n", player->nb_cards[0]);
-    printf("You:\t\t\tDealer:\n");
-    for (int i = 0; i < highest; i++) {
+void    _print_points(uint8_t points) {
+    if (points > BLACKJACK) {
+        printf("Points: \033[31m%d\033[0m\n", points);
+    } else {
+        printf("Points: \033[32m%d\033[0m\n", points);
+    }
+}
 
-        if (i < player->nb_cards[0] && !flag) {
-            // printf("A\n");
-            printf("%s of %s: %d\t", player->hand[0][i].name, player->hand[0][i].color, player->hand[0][i].value);
-        }
-
-        if (i >= player->nb_cards[0] && !flag) {
-            // printf("B\n");
-            printf("\n");
-            flag = true;
-        }
-
-        if (j < player->nb_cards[1] && flag) {
-            // printf("C\n");
-            printf("%s of %s: %d\t", player->hand[1][j].name, player->hand[0][j].color, player->hand[0][j].value);
-            j++;
-        }
-
-        if ((i < dealer->nb_cards && !flag && i >= player->nb_cards[0]) || (i < dealer->nb_cards && flag && j >= player->nb_cards[1])) {
-            // printf("D\n");
-            printf("\t\t\t");
-        }
-
-        if (i < dealer->nb_cards) {
-            // printf("E\n");
-            if (i == 1 && hide_dealer_card) {
-                printf("???\n");
-            } else {
-                printf("%s of %s:\t%d\n", dealer->hand[i].name, dealer->hand[i].color, dealer->hand[i].value);
+void    show_hands(player_s* player, dealer_s* dealer, bool show_dealer_card) {
+    #ifdef SHOW_PRINT
+        printf("--------------------\nPlayer\n");
+        for (int i = 0; i < MAX_HAND; i++) {
+            for (int j = 0; j < player->nb_cards[i]; j++) {
+                _print_card(player->hand[i][j]);
+            }
+            if (player->nb_cards[i] > 0) {
+                _print_points(player->points[i]);
             }
         }
-    }
 
-    if (highest != dealer->nb_cards) {
+        printf("Dealer\n");
+        if (show_dealer_card) {
+            for (int i = 0; i < dealer->nb_cards; i++) {
+                _print_card(dealer->hand[i]);
+            }
+        } else {
+            _print_card(dealer->hand[0]);
+        }
+        _print_points(dealer->points);
         printf("\n");
-    }
+    #endif
+}
 
-    if (hide_dealer_card) {
-        printf("Total:\n%d\t\t\t%d\n\n", player->points[0], dealer->hand[0].value);
-    } else {
-        printf("Total:\n%d\t\t\t%d\n\n", player->points[0], dealer->points);
-    }
+void    blackjack_player(void) {
+    #ifdef  SHOW_PRINT
+        printf("BLACKJACK!!!\n");
+    #endif
+}
+
+void    blackjack_dealer(void) {
+    #ifdef  SHOW_PRINT
+        printf("DEALER'S BLACKJACK :c\n");
+    #endif
+}
+
+void    burst_player(void) {
+    #ifdef  SHOW_PRINT
+        printf("BURST...\n");
+    #endif
+}
+
+void    burst_dealer(void) {
+    #ifdef  SHOW_PRINT
+        printf("DEALER BURST!\n");
+    #endif
+}
+
+void    player_win(void) {
+    #ifdef  SHOW_PRINT
+        printf("PLAYER WIN :)\n");
+    #endif
+}
+
+void    player_lose(void) {
+    #ifdef  SHOW_PRINT
+        printf("PLAYER LOSE :(\n");
+    #endif
+}
+
+void    push(void) {
+    #ifdef  SHOW_PRINT
+        printf("PUSH.\n");
+    #endif
 }
