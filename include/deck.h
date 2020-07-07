@@ -10,7 +10,7 @@
 #define NB_BJ_CARDS     (NB_DECK_CARDS * NB_deck_s)
 
 #define MAX_HAND        2
-#define MAX_HAND_CARDS  11
+#define MAX_HAND_CARDS  22
 
 typedef struct card {
     char    name[NAME_LENGTH];
@@ -24,3 +24,7 @@ typedef struct deck {
 
 void    get_deck(deck_s* deck);
 void    pick_card(deck_s* deck, void* person, const uint8_t* idx);
+
+
+
+uint8_t  _get_points(card_s hand[MAX_HAND_CARDS], uint8_t nb_cards);

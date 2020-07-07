@@ -3,10 +3,10 @@
 #include "person.h"
 
 #define NB_GAME     100
+#define DEALER_THRESHOLD    16
 
 #define BLACKJACK   21
 #define ACE         11
-#define ONE         1
 
 void    distribute(deck_s* deck, player_s* player, dealer_s* dealer);
 void    game_loop(deck_s* deck, player_s* player, dealer_s* dealer);

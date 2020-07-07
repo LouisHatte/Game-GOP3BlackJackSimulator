@@ -16,19 +16,26 @@ void    play_turn(deck_s* deck, player_s* player, dealer_s* dealer) {
     while (1) {
         player_turn(deck, player);
 
-        if (v_stand || player->points[FIRST_HAND] > BLACKJACK) {
+        if (v_stand) {
             v_stand = false;
             break;
         }
+
+        if (player->points[FIRST_HAND] > BLACKJACK) {
+            show_hands(player, dealer, false);
+            return;
+        }
     }
+    show_hands(player, dealer, true);
 
     if (dealer->points == BLACKJACK) {
         return;
     }
 
-    if (player->points[0] <= BLACKJACK) {
-        dealer_turn(deck, dealer);
+    while (dealer->points <= DEALER_THRESHOLD) {
+        pick_card(deck, dealer, NULL);
     }
+    show_hands(player, dealer, true);
 }
 
 void    hit(deck_s* deck, player_s* player, uint8_t idx) {

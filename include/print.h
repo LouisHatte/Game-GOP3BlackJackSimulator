@@ -5,7 +5,6 @@
 #define SHOW_PRINT  1
 
 void    show_hands(player_s* player, dealer_s* dealer, bool hide_dealer_card);
-
 void    blackjack_player(void);
 void    blackjack_dealer(void);
 void    burst_player(void);

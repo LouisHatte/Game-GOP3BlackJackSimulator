@@ -4,7 +4,6 @@
 
 #include "deck.h"
 
-#define MAX_HAND    2
 #define FIRST_HAND  0
 #define SECOND_HAND 1
 

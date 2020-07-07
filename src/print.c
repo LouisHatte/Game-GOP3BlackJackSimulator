@@ -1,13 +1,18 @@
-#include "person.h"
 #include "print.h"
 #include "game.h"
 
 #include <stdio.h>
 
+/*
+** Prints a card.
+*/
 void    _print_card(card_s card) {
     printf("    %s of %s: %d\n", card.name, card.color, card.value);
 }
 
+/*
+** Prints Black Jack points.
+*/
 void    _print_points(uint8_t points) {
     if (points > BLACKJACK) {
         printf("Points: \033[31m%d\033[0m\n", points);
@@ -16,6 +21,9 @@ void    _print_points(uint8_t points) {
     }
 }
 
+/*
+** Prints hands.
+*/
 void    show_hands(player_s* player, dealer_s* dealer, bool show_dealer_card) {
     #ifdef SHOW_PRINT
         printf("--------------------\nPlayer\n");
@@ -33,10 +41,11 @@ void    show_hands(player_s* player, dealer_s* dealer, bool show_dealer_card) {
             for (int i = 0; i < dealer->nb_cards; i++) {
                 _print_card(dealer->hand[i]);
             }
+            _print_points(dealer->points);
         } else {
             _print_card(dealer->hand[0]);
+            _print_points(dealer->hand[0].value);
         }
-        _print_points(dealer->points);
         printf("\n");
     #endif
 }
