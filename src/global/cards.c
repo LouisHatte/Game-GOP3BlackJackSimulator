@@ -1,6 +1,6 @@
 #include "deck.h"
 
-const card_s G_CARDS[52] = {
+const card_s g_cards[52] = {
     { .color = "heart  ", .name = "ace  ", .value = 11 },
     { .color = "heart  ", .name = "two  ", .value = 2 },
     { .color = "heart  ", .name = "three", .value = 3 },

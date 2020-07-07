@@ -47,8 +47,8 @@ void    show_hands(player_s* player, dealer_s* dealer, bool show_dealer_card) {
             }
             _print_points(dealer->points);
         } else {
-            _print_card(dealer->hand[0]);
-            _print_points(dealer->hand[0].value);
+            _print_card(dealer->hand[FIRST_CARD]);
+            _print_points(dealer->hand[FIRST_CARD].value);
         }
         printf("\n");
     #endif

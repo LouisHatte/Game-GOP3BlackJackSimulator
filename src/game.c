@@ -12,9 +12,6 @@ extern bool g_stand[2];
 extern bool g_dOuble[2];
 extern bool g_split;
 
-
-#include <unistd.h>
-
 /*
 ** Initializes a new Black Jack game turn
 ** by reseting player's hand and bet, reseting
@@ -82,7 +79,6 @@ void    play_turn(deck_s* deck, player_s* player, dealer_s* dealer) {
             }
         }
         error(player, dealer);
-        sleep(1);
     }
     show_hands(player, dealer, true);
 

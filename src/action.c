@@ -11,28 +11,28 @@ extern bool g_dOuble[2];
 extern bool g_split;
 
 bool    hitable(player_s* player, uint8_t idx) {
-    if (player->nb_cards[idx] >= MIN_HAND_CARDS && player->points[idx] <= BLACKJACK) {
+    if (!g_stand[idx] && !g_dOuble[idx] && player->nb_cards[idx] >= MIN_HAND_CARDS && player->points[idx] <= BLACKJACK) {
         return true;
     }
     return false;
 }
 
 bool    standalbe(player_s* player, uint8_t idx) {
-    if (player->nb_cards[idx] >= MIN_HAND_CARDS && player->points[idx] <= BLACKJACK) {
+    if (!g_stand[idx] && !g_dOuble[idx] && player->nb_cards[idx] >= MIN_HAND_CARDS && player->points[idx] <= BLACKJACK) {
         return true;
     }
     return false;
 }
 
 bool    dOubleable(player_s* player, uint8_t idx) {
-    if (!g_dOuble[idx] && player->nb_cards[idx] >= MIN_HAND_CARDS && player->points[idx] <= BLACKJACK) {
+    if (!g_stand[idx] && !g_dOuble[idx] && player->nb_cards[idx] >= MIN_HAND_CARDS && player->points[idx] <= BLACKJACK) {
         return true;
     }
     return false;
 }
 
 bool    splitable(player_s* player) {
-    if (player->nb_cards[FIRST_HAND] == 2 && player->nb_cards[SECOND_HAND] == 0 && player->hand[FIRST_HAND][0].value == player->hand[FIRST_HAND][1].value) {
+    if (player->nb_cards[FIRST_HAND] == 2 && player->nb_cards[SECOND_HAND] == 0 && player->hand[FIRST_HAND][FIRST_CARD].value == player->hand[FIRST_HAND][SECOND_CARD].value) {
         return true;
     }
     return false;
@@ -69,9 +69,9 @@ void    split(deck_s* deck, player_s* player) {
     if (splitable(player)) {
         player->balance -= player->bet[FIRST_HAND];
         player->bet[SECOND_HAND] = player->bet[FIRST_HAND];
-        memcpy(&(player->hand[SECOND_HAND][0]), &(player->hand[FIRST_HAND][1]), sizeof(card_s));
-        player->nb_cards[0] = 1;
-        player->nb_cards[1] = 1;
+        memcpy(&(player->hand[SECOND_HAND][FIRST_CARD]), &(player->hand[FIRST_HAND][SECOND_CARD]), sizeof(card_s));
+        player->nb_cards[FIRST_HAND] = 1;
+        player->nb_cards[SECOND_HAND] = 1;
         pick_card(deck, player, &g_first_hand);
         pick_card(deck, player, &g_second_hand);
         g_split = true;
