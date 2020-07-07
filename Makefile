@@ -1,11 +1,11 @@
 CC		=	gcc
-CFLAGS	=	-Iinclude -g3 #-Wall -Werror -Wextra
+CFLAGS	=	-Iinclude -Iinclude/algo -g3 #-Wall -Werror -Wextra
 REMOVE 	=	rm -f
 
 EXEC_DIR	=	bin/
 
 EXEC 	=	bj
-SRC 	= 	$(wildcard src/*.c)
+SRC 	= 	$(wildcard src/*.c) $(wildcard src/global/*.c) $(wildcard src/algo/*.c)
 OBJ	=		$(SRC:.c=.o)
 
 

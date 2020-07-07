@@ -1,11 +1,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include "deck.h"
 #include "person.h"
-#include "game.h"
-
-#include <stdio.h>
 
 extern card_s CARDS[52];
 
@@ -26,7 +22,7 @@ static void _shift_left_deck(card_s cards[], uint8_t size, uint8_t idx) {
 }
 
 /*
-** Get a new deck of 312 cards.
+** Gets a new deck of 312 cards.
 */
 void    get_deck(deck_s* deck) {
     card_s cards[NB_DECK_CARDS];
@@ -34,7 +30,7 @@ void    get_deck(deck_s* deck) {
     uint8_t r = 0;
     uint8_t size = NB_DECK_CARDS;
 
-    memset(cards_left, NB_deck_s, sizeof(uint8_t) * NB_DECK_CARDS);
+    memset(cards_left, NB_DECK_S, sizeof(uint8_t) * NB_DECK_CARDS);
     memcpy(cards, &CARDS, sizeof(card_s) * NB_DECK_CARDS);
 
     for (int i = 0; i < NB_BJ_CARDS; i++) {
@@ -50,9 +46,9 @@ void    get_deck(deck_s* deck) {
 }
 
 /*
-** Count Black Jack points.
+** Counts Black Jack points.
 */
-uint8_t  _get_points(card_s hand[MAX_HAND_CARDS], uint8_t nb_cards) {
+static uint8_t  _get_points(card_s hand[MAX_HAND_CARDS], uint8_t nb_cards) {
     uint8_t nb_ace = 0;
     uint8_t points = 0;
 
@@ -71,7 +67,7 @@ uint8_t  _get_points(card_s hand[MAX_HAND_CARDS], uint8_t nb_cards) {
 }
 
 /*
-** Pick a card from the deck and add it to
+** Picks a card from the deck and add it to
 ** a hand then calculate new Black Jack points.
 */
 void    pick_card(deck_s* deck, void* person, const uint8_t* idx) {

@@ -1,33 +1,32 @@
 #include <time.h>
 #include <stdlib.h>
-#include <stdbool.h>
 
-#include "deck.h"
-#include "person.h"
 #include "game.h"
 #include "action.h"
+#include "player.h"
 
-#include <stdio.h>
+extern bool v_split;
 
 int main(void) {
     deck_s deck;
     player_s player;
     dealer_s dealer;
 
-    // Set your initial player balance here
-    player.balance = 10;
+    player.balance = 10; // Set your initial player balance here.
 
     srand(time(NULL));
 
     for (int i = 0; i < NB_GAME; i++) {
         init_turn(&deck, &player, &dealer);
         bet(&player);
-        player.balance -= player.bet;
+        player.balance -= player.bet[FIRST_HAND];
         distribute(&deck, &player, &dealer);
         play_turn(&deck, &player, &dealer);
-        announce_results(&player, &dealer);
-        exit(0);
+        announce_results(&player, &dealer, FIRST_HAND);
+        if (v_split) {
+            v_split = false;
+            announce_results(&player, &dealer, SECOND_HAND);
+        }
     }
-
     return 0;
 }

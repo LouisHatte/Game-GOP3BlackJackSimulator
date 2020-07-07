@@ -1,14 +1,14 @@
 #pragma once
 
+#include <stdbool.h>
+
 #include "person.h"
 
-#define NB_GAME     100
+#define NB_GAME 10000
+
 #define DEALER_THRESHOLD    16
 
-#define BLACKJACK   21
-#define ACE         11
-
+void    init_turn(deck_s* deck, player_s* player, dealer_s* dealer);
 void    distribute(deck_s* deck, player_s* player, dealer_s* dealer);
-void    game_loop(deck_s* deck, player_s* player, dealer_s* dealer);
-void    show_hands(player_s* player, dealer_s* dealer, bool hide_dealer_card);
-void    announce_results(player_s* player, dealer_s* dealer);
+void    play_turn(deck_s* deck, player_s* player, dealer_s* dealer);
+void    announce_results(player_s* player, dealer_s* dealer, uint8_t idx);

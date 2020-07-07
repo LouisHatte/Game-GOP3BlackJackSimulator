@@ -1,19 +1,23 @@
-#include "print.h"
-#include "game.h"
-
 #include <stdio.h>
+#include <stdlib.h>
+
+#include "print.h"
+
+extern uint8_t v_stand[2];
+extern uint8_t v_dOuble[2];
+extern uint8_t v_split[2];
 
 /*
 ** Prints a card.
 */
-void    _print_card(card_s card) {
+static void _print_card(card_s card) {
     printf("    %s of %s: %d\n", card.name, card.color, card.value);
 }
 
 /*
-** Prints Black Jack points.
+** Prints Black Jack hand points.
 */
-void    _print_points(uint8_t points) {
+static void _print_points(uint8_t points) {
     if (points > BLACKJACK) {
         printf("Points: \033[31m%d\033[0m\n", points);
     } else {
@@ -47,6 +51,12 @@ void    show_hands(player_s* player, dealer_s* dealer, bool show_dealer_card) {
             _print_points(dealer->hand[0].value);
         }
         printf("\n");
+    #endif
+}
+
+void    show_balance(player_s* player) {
+    #ifdef  SHOW_PRINT
+        printf("Balance: \033[33m%ld\033[0m\n", player->balance);
     #endif
 }
 
@@ -90,4 +100,49 @@ void    push(void) {
     #ifdef  SHOW_PRINT
         printf("PUSH.\n");
     #endif
+}
+
+void    error(player_s* player, dealer_s* dealer) {
+    #ifdef  SHOW_ERROR
+        dprintf(2, "\033[31mPlayer didn't end his turn.\033[0m\n");
+        show_hands(player, dealer, true);
+        dprintf(2, "\033[31m--------------------\n    Split: %s\n", v_split ? "true" : "false");
+        dprintf(2, "First Hand\n");
+        dprintf(2, "    Stand: %s\n", v_stand[FIRST_HAND] ? "true": "false");
+        dprintf(2, "    Double: %s\033[0m\n", v_dOuble[FIRST_HAND] ? "true" : "false");
+        if (v_split) {
+            dprintf(2, "\033[31mSecond Hand\n");
+            dprintf(2, "    Stand: %s\n", v_stand[SECOND_HAND] ? "true": "false");
+            dprintf(2, "    Double: %s\033[0m\n", v_dOuble[SECOND_HAND] ? "true" : "false");
+        }
+    #endif
+    exit(1);
+}
+
+void    hit_error(void) {
+    #ifdef  SHOW_ERROR
+        dprintf(2, "\033[31mYou can't hit\033[0m\n");
+    #endif
+    exit(1);
+}
+
+void    stand_error(void) {
+    #ifdef  SHOW_ERROR
+        dprintf(2, "\033[31mYou can't stand\033[0m\n");
+    #endif
+    exit(1);
+}
+
+void    dOuble_error(void) {
+    #ifdef  SHOW_ERROR
+        dprintf(2, "\033[31mYou can't double\033[0m\n");
+    #endif
+    exit(1);
+}
+
+void    split_error(void) {
+    #ifdef  SHOW_ERROR
+        dprintf(2, "\033[31mYou can't split\033[0m\n");
+    #endif
+    exit(1);
 }
