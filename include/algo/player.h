@@ -1,6 +1,6 @@
 #pragma once
 
 #include "person.h"
+#include "action.h"
 
-void    bet(player_s* player);
-void    player_turn(deck_s* deck, player_s* player);
+#define THRESHOLD   16

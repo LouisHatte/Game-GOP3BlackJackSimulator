@@ -3,9 +3,9 @@
 
 #include "print.h"
 
-extern uint8_t v_stand[2];
-extern uint8_t v_dOuble[2];
-extern uint8_t v_split[2];
+extern uint8_t g_stand[2];
+extern uint8_t g_dOuble[2];
+extern uint8_t g_split[2];
 
 /*
 ** Prints a card.
@@ -106,14 +106,14 @@ void    error(player_s* player, dealer_s* dealer) {
     #ifdef  SHOW_ERROR
         dprintf(2, "\033[31mPlayer didn't end his turn.\033[0m\n");
         show_hands(player, dealer, true);
-        dprintf(2, "\033[31m--------------------\n    Split: %s\n", v_split ? "true" : "false");
+        dprintf(2, "\033[31m--------------------\n    Split: %s\n", g_split ? "true" : "false");
         dprintf(2, "First Hand\n");
-        dprintf(2, "    Stand: %s\n", v_stand[FIRST_HAND] ? "true": "false");
-        dprintf(2, "    Double: %s\033[0m\n", v_dOuble[FIRST_HAND] ? "true" : "false");
-        if (v_split) {
+        dprintf(2, "    Stand: %s\n", g_stand[FIRST_HAND] ? "true": "false");
+        dprintf(2, "    Double: %s\033[0m\n", g_dOuble[FIRST_HAND] ? "true" : "false");
+        if (g_split) {
             dprintf(2, "\033[31mSecond Hand\n");
-            dprintf(2, "    Stand: %s\n", v_stand[SECOND_HAND] ? "true": "false");
-            dprintf(2, "    Double: %s\033[0m\n", v_dOuble[SECOND_HAND] ? "true" : "false");
+            dprintf(2, "    Stand: %s\n", g_stand[SECOND_HAND] ? "true": "false");
+            dprintf(2, "    Double: %s\033[0m\n", g_dOuble[SECOND_HAND] ? "true" : "false");
         }
     #endif
     exit(1);

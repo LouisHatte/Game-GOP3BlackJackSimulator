@@ -21,3 +21,6 @@ typedef struct dealer {
     uint8_t nb_cards;
     uint8_t points;
 } dealer_s;
+
+void    bet(player_s* player);
+void    player_turn(deck_s* deck, player_s* player);

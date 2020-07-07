@@ -5,7 +5,7 @@
 #include "action.h"
 #include "player.h"
 
-extern bool v_split;
+extern bool g_split;
 
 int main(void) {
     deck_s deck;
@@ -23,8 +23,8 @@ int main(void) {
         distribute(&deck, &player, &dealer);
         play_turn(&deck, &player, &dealer);
         announce_results(&player, &dealer, FIRST_HAND);
-        if (v_split) {
-            v_split = false;
+        if (g_split) {
+            g_split = false;
             announce_results(&player, &dealer, SECOND_HAND);
         }
     }

@@ -3,7 +3,7 @@
 
 #include "person.h"
 
-extern card_s CARDS[52];
+extern card_s G_CARDS[52];
 
 static void _shift_left_tab(uint8_t t[], uint8_t size, uint8_t idx) {
     for (int i = idx; i < size - 1; i++) {
@@ -31,7 +31,7 @@ void    get_deck(deck_s* deck) {
     uint8_t size = NB_DECK_CARDS;
 
     memset(cards_left, NB_DECK_S, sizeof(uint8_t) * NB_DECK_CARDS);
-    memcpy(cards, &CARDS, sizeof(card_s) * NB_DECK_CARDS);
+    memcpy(cards, &G_CARDS, sizeof(card_s) * NB_DECK_CARDS);
 
     for (int i = 0; i < NB_BJ_CARDS; i++) {
         r = rand() % size;

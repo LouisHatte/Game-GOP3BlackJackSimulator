@@ -2,16 +2,16 @@
 
 #include "print.h"
 #include "game.h"
-#include "player.h"
 
 extern card_s CARDS[52];
 
-const uint8_t first_hand = 0;
-const uint8_t second_hand = 1;
+extern uint8_t g_first_hand;
+extern uint8_t g_second_hand;
 
-bool v_stand[2] = { false, false };
-bool v_dOuble[2] = { false, false };
-bool v_split = false;
+extern bool g_stand[2];
+extern bool g_dOuble[2];
+extern bool g_split;
+
 
 #include <unistd.h>
 
@@ -39,9 +39,9 @@ void    init_turn(deck_s* deck, player_s* player, dealer_s* dealer) {
 ** to dealer one by one starting by player.
 */
 void    distribute(deck_s* deck, player_s* player, dealer_s* dealer) {
-    pick_card(deck, player, &first_hand);
+    pick_card(deck, player, &g_first_hand);
     pick_card(deck, dealer, NULL);
-    pick_card(deck, player, &first_hand);
+    pick_card(deck, player, &g_first_hand);
     pick_card(deck, dealer, NULL);
 
     show_hands(player, dealer, false);
@@ -58,12 +58,12 @@ void    play_turn(deck_s* deck, player_s* player, dealer_s* dealer) {
     while (1) {
         player_turn(deck, player);
 
-        if (!v_split) {
+        if (!g_split) {
             if (player->points[FIRST_HAND] > BLACKJACK) {
                 show_hands(player, dealer, false);
                 return;
             }
-            if (v_stand[FIRST_HAND] || v_dOuble[FIRST_HAND]) {
+            if (g_stand[FIRST_HAND] || g_dOuble[FIRST_HAND]) {
                 break;
             }
         } else {
@@ -71,13 +71,13 @@ void    play_turn(deck_s* deck, player_s* player, dealer_s* dealer) {
                 show_hands(player, dealer, false);
                 return;
             }
-            if (player->points[FIRST_HAND] > BLACKJACK && (v_stand[SECOND_HAND] || v_dOuble[SECOND_HAND])) {
+            if (player->points[FIRST_HAND] > BLACKJACK && (g_stand[SECOND_HAND] || g_dOuble[SECOND_HAND])) {
                 break;
             }
-            if (player->points[SECOND_HAND] > BLACKJACK && (v_stand[FIRST_HAND] || v_dOuble[FIRST_HAND])) {
+            if (player->points[SECOND_HAND] > BLACKJACK && (g_stand[FIRST_HAND] || g_dOuble[FIRST_HAND])) {
                 break;
             }
-            if ((v_stand[FIRST_HAND] || v_dOuble[FIRST_HAND]) && (v_stand[SECOND_HAND] || v_dOuble[SECOND_HAND])) {
+            if ((g_stand[FIRST_HAND] || g_dOuble[FIRST_HAND]) && (g_stand[SECOND_HAND] || g_dOuble[SECOND_HAND])) {
                 break;
             }
         }
@@ -100,10 +100,10 @@ void    play_turn(deck_s* deck, player_s* player, dealer_s* dealer) {
 ** Resets Blackjack actions.
 */
 static void _reset_actions(void) {
-    v_stand[FIRST_HAND] = false;
-    v_stand[SECOND_HAND] = false;
-    v_dOuble[FIRST_HAND] = false;
-    v_dOuble[SECOND_HAND] = false;
+    g_stand[FIRST_HAND] = false;
+    g_stand[SECOND_HAND] = false;
+    g_dOuble[FIRST_HAND] = false;
+    g_dOuble[SECOND_HAND] = false;
 }
 
 /*
