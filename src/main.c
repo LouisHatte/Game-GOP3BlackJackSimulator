@@ -1,18 +1,31 @@
 #include <time.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 #include "game.h"
 #include "action.h"
 #include "player.h"
+#include "save.h"
 
 extern bool g_split;
 
-int main(void) {
+void    check_args(int ac, char **av) {
+    if (ac != 2) {
+        dprintf(2, "Usage: %s file_name\n", av[0]);
+        exit(1);
+    }
+}
+
+int main(int ac, char **av) {
     deck_s deck;
     player_s player;
     dealer_s dealer;
+    int64_t balance[NB_GAME + 1];
 
-    player.balance = 10; // Set your initial player balance here.
+    check_args(ac, av);
+
+    player.balance = 100; // Set your initial player balance here.
+    balance[0] = player.balance;
 
     srand(time(NULL));
 
@@ -27,6 +40,10 @@ int main(void) {
             g_split = false;
             announce_results(&player, &dealer, SECOND_HAND);
         }
+        balance[i + 1] = player.balance;
     }
+
+    save_balance_data(balance, av[1]);
+
     return 0;
 }

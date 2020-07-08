@@ -1,5 +1,6 @@
 CC		=	gcc
 CFLAGS	=	-Iinclude -Iinclude/algo -g3 #-Wall -Werror -Wextra
+LDFLAGS =	-lgraph
 REMOVE 	=	rm -f
 
 EXEC_DIR	=	bin/
@@ -12,7 +13,7 @@ OBJ	=		$(SRC:.c=.o)
 all: $(EXEC) clean
 
 $(EXEC): $(OBJ)
-	$(CC) -o $(EXEC_DIR)$@ $^
+	$(CC) -o $(EXEC_DIR)$@ $^ $(LDFLAGS)
 
 %.o: %.c
 	@$(CC) -o $@ -c $< $(CFLAGS)

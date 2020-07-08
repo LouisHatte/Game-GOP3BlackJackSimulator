@@ -4,7 +4,7 @@
 
 #include "person.h"
 
-#define NB_GAME 10
+#define NB_GAME 10000
 
 #define DEALER_THRESHOLD    16
 

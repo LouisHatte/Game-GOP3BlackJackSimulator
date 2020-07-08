@@ -5,7 +5,7 @@
 #include "person.h"
 
 // Comment these lines to hide prints
-#define SHOW_PRINT
+// #define SHOW_PRINT
 #define SHOW_ERROR
 
 void    show_hands(player_s* player, dealer_s* dealer, bool hide_dealer_card);

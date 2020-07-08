@@ -5,7 +5,7 @@
 
 extern uint8_t g_stand[2];
 extern uint8_t g_dOuble[2];
-extern uint8_t g_split[2];
+extern uint8_t g_split;
 
 /*
 ** Prints a card.
