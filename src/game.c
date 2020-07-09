@@ -53,7 +53,7 @@ void    play_turn(deck_s* deck, player_s* player, dealer_s* dealer) {
     }
 
     while (1) {
-        player_turn(deck, player);
+        player_turn(deck, player, dealer);
 
         if (!g_split) {
             if (player->points[FIRST_HAND] > BLACKJACK) {
@@ -108,21 +108,27 @@ static void _reset_actions(void) {
 void    announce_results(player_s* player, dealer_s* dealer, uint8_t idx) {
     if (player->nb_cards[FIRST_HAND] == 2 && player->nb_cards[SECOND_HAND] == 0 && player->hand[FIRST_HAND][FIRST_CARD].value + player->hand[FIRST_HAND][SECOND_CARD].value == BLACKJACK) {
         player->balance += player->bet[idx] * 2.5;
+        player->lose_strick = 0;
         blackjack_player();
     } else if (player->points[idx] > BLACKJACK) {
+        player->lose_strick += 1;
         burst_player();
     } else if (dealer->hand[FIRST_CARD].value + dealer->hand[SECOND_CARD].value == BLACKJACK) {
+        player->lose_strick += 1;
         blackjack_dealer();
     } else if (dealer->points > BLACKJACK) {
         player->balance += player->bet[idx] * 2;
+        player->lose_strick = 0;
         burst_dealer();
     } else if (player->points[idx] == dealer->points) {
         player->balance += player->bet[idx];
         push();
     } else if (player->points[idx] > dealer->points) {
         player->balance += player->bet[idx] * 2;
+        player->lose_strick = 0;
         player_win();
     } else {
+        player->lose_strick += 1;
         player_lose();
     }
     show_balance(player);

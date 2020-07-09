@@ -32,40 +32,40 @@ bool    dOubleable(player_s* player, uint8_t idx) {
 }
 
 bool    splitable(player_s* player) {
-    if (player->nb_cards[FIRST_HAND] == 2 && player->nb_cards[SECOND_HAND] == 0 && player->hand[FIRST_HAND][FIRST_CARD].value == player->hand[FIRST_HAND][SECOND_CARD].value) {
+    if (!g_split && player->hand[FIRST_HAND][FIRST_CARD].value == player->hand[FIRST_HAND][SECOND_CARD].value) {
         return true;
     }
     return false;
 }
 
-void    hit(deck_s* deck, player_s* player, uint8_t idx) {
+void    hit(deck_s* deck, player_s* player, uint8_t idx, dealer_s* dealer) {
     if (hitable(player, idx)) {
         pick_card(deck, player, &idx);
     } else {
-        hit_error();
+        hit_error(player, dealer);
     }
 }
 
-void    stand(player_s* player, uint8_t idx) {
+void    stand(player_s* player, uint8_t idx, dealer_s* dealer) {
     if (standalbe(player, idx)) {
         g_stand[idx] = true;
     } else {
-        stand_error();
+        stand_error(player, dealer);
     }
 }
 
-void    dOuble(deck_s* deck, player_s* player, uint8_t idx) {
+void    dOuble(deck_s* deck, player_s* player, uint8_t idx, dealer_s* dealer) {
     if (dOubleable(player, idx)) {
         player->balance -= player->bet[idx];
         player->bet[idx] *= 2;
         pick_card(deck, player, &idx);
         g_dOuble[idx] = true;
     } else {
-        dOuble_error();
+        dOuble_error(player, dealer);
     }
 }
 
-void    split(deck_s* deck, player_s* player) {
+void    split(deck_s* deck, player_s* player, dealer_s* dealer) {
     if (splitable(player)) {
         player->balance -= player->bet[FIRST_HAND];
         player->bet[SECOND_HAND] = player->bet[FIRST_HAND];
@@ -76,6 +76,6 @@ void    split(deck_s* deck, player_s* player) {
         pick_card(deck, player, &g_second_hand);
         g_split = true;
     } else {
-        split_error();
+        split_error(player, dealer);
     }
 }

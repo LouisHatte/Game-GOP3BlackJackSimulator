@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 
 def checkArgs():
     if len(sys.argv) != 2:
-        print('Usage: python3 graph.py file_path_name\n', file=sys.stderr)
+        print('Usage: python3 graph.py output_file_path_name\n', file=sys.stderr)
         exit()
 
 def parseFile():

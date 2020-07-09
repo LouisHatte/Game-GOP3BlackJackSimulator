@@ -119,30 +119,34 @@ void    error(player_s* player, dealer_s* dealer) {
     exit(1);
 }
 
-void    hit_error(void) {
+void    hit_error(player_s* player, dealer_s* dealer) {
     #ifdef  SHOW_ERROR
         dprintf(2, "\033[31mYou can't hit\033[0m\n");
+        error(player, dealer);
     #endif
     exit(1);
 }
 
-void    stand_error(void) {
+void    stand_error(player_s* player, dealer_s* dealer) {
     #ifdef  SHOW_ERROR
         dprintf(2, "\033[31mYou can't stand\033[0m\n");
+        error(player, dealer);
     #endif
     exit(1);
 }
 
-void    dOuble_error(void) {
+void    dOuble_error(player_s* player, dealer_s* dealer) {
     #ifdef  SHOW_ERROR
         dprintf(2, "\033[31mYou can't double\033[0m\n");
+        error(player, dealer);
     #endif
     exit(1);
 }
 
-void    split_error(void) {
+void    split_error(player_s* player, dealer_s* dealer) {
     #ifdef  SHOW_ERROR
         dprintf(2, "\033[31mYou can't split\033[0m\n");
+        error(player, dealer);
     #endif
     exit(1);
 }

@@ -14,6 +14,7 @@ typedef struct player {
     uint8_t     points[MAX_HAND];
     int64_t     balance;
     uint64_t    bet[MAX_HAND];
+    uint8_t     lose_strick;
 } player_s;
 
 typedef struct dealer {
@@ -22,5 +23,5 @@ typedef struct dealer {
     uint8_t points;
 } dealer_s;
 
-void    bet(player_s* player);
-void    player_turn(deck_s* deck, player_s* player);
+void    bet(player_s* player, uint8_t idx);
+void    player_turn(deck_s* deck, player_s* player, dealer_s* dealer);

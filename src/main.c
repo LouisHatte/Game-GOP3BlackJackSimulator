@@ -24,14 +24,15 @@ int main(int ac, char **av) {
 
     check_args(ac, av);
 
-    player.balance = 100; // Set your initial player balance here.
+    player.balance = 100000000; // Set your initial player balance here.
+    player.lose_strick = 0;
     balance[0] = player.balance;
 
     srand(time(NULL));
 
     for (int i = 0; i < NB_GAME; i++) {
         init_turn(&deck, &player, &dealer);
-        bet(&player);
+        bet(&player, FIRST_HAND);
         player.balance -= player.bet[FIRST_HAND];
         distribute(&deck, &player, &dealer);
         play_turn(&deck, &player, &dealer);
