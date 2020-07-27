@@ -4,7 +4,13 @@
 #include <stdio.h>
 
 #include "save.h"
+#include "game.h"
 
+/*
+** Saves the evolution of the player's balance
+** in file_name you have chosen as input in
+** output/ directory.
+*/
 void    save_balance_data(int64_t balance[NB_GAME], char* file_name) {
     uint8_t file_name_length = strlen(file_name);
     char folder[FOLDER_LENGTH] = FOLDER_NAME;

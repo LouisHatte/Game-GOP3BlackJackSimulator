@@ -1,10 +1,6 @@
-#include "player.h"
-#include "action.h"
-#include "tabler.h"
 #include "bet.h"
-
-#include <stdio.h>
-#include <stdlib.h>
+#include "player.h"
+#include "tabler.h"
 
 extern uint8_t g_first_hand;
 extern uint8_t g_second_hand;
@@ -56,18 +52,14 @@ static void _play_hand(deck_s* deck, player_s* player, dealer_s* dealer, uint8_t
             if (player->points[idx] > BLACKJACK) {
                 break;
             } else if (player->points[idx] == BLACKJACK) {
-                // printf("STAND SOFT\n");
                 stand(player, idx, dealer);
                 break;
             } else if (g_tabler.soft[soft_points][dealer->hand[FIRST_CARD].value] == STAND) {
-                // printf("STAND SOFT\n");
                 stand(player, idx, dealer);
                 break;
             } else if (g_tabler.soft[soft_points][dealer->hand[FIRST_CARD].value] == HIT) {
-                // printf("HIT SOFT\n");
                 hit(deck, player, idx, dealer);
             } else if (g_tabler.soft[soft_points][dealer->hand[FIRST_CARD].value] == DOUBLE) {
-                // printf("DOUBLE SOFT\n");
                 dOuble(deck, player, idx, dealer);
                 break;
             }
@@ -75,18 +67,14 @@ static void _play_hand(deck_s* deck, player_s* player, dealer_s* dealer, uint8_t
             if (player->points[idx] > BLACKJACK) {
                 break;
             } else if (player->points[idx] == BLACKJACK) {
-                // printf("STAND HARD\n");
                 stand(player, idx, dealer);
                 break;
             } else if (g_tabler.hard[player->points[idx]][dealer->hand[FIRST_CARD].value] == STAND) {
-                // printf("STAND HARD\n");
                 stand(player, idx, dealer);
                 break;
             } else if (g_tabler.hard[player->points[idx]][dealer->hand[FIRST_CARD].value] == HIT) {
-                // printf("HIT HARD\n");
                 hit(deck, player, idx, dealer);
             } else if (g_tabler.hard[player->points[idx]][dealer->hand[FIRST_CARD].value] == DOUBLE) {
-                // printf("DOUBLE HARD\n");
                 dOuble(deck, player, idx, dealer);
                 break;
             }
@@ -100,12 +88,8 @@ void    player_turn(deck_s* deck, player_s* player, dealer_s* dealer) {
             split(deck, player, dealer);
         }
     }
-    // printf("------FIRST HAND------\n");
     _play_hand(deck, player, dealer, g_first_hand);
-    // printf("----------------------\n");
     if (player->nb_cards[SECOND_HAND] == 2) {
-        // printf("------SECOND HAND------\n")
         _play_hand(deck, player, dealer, g_second_hand);
-        // printf("----------------------\n");
     }
 }

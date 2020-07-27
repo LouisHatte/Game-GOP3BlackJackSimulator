@@ -1,7 +1,5 @@
 #pragma once
 
-#include <stdbool.h>
-
 #include "person.h"
 
 #define NB_GAME 10000

@@ -1,15 +1,14 @@
 #include <time.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdbool.h>
 
 #include "game.h"
-#include "action.h"
-#include "player.h"
 #include "save.h"
 
 extern bool g_split;
 
-void    check_args(int ac, char **av) {
+static void _check_args(int ac, char **av) {
     if (ac != 2) {
         dprintf(2, "Usage: %s file_name\n", av[0]);
         exit(1);
@@ -22,7 +21,7 @@ int main(int ac, char **av) {
     dealer_s dealer;
     int64_t balance[NB_GAME + 1];
 
-    check_args(ac, av);
+    _check_args(ac, av);
 
     player.balance = 100000000; // Set your initial player balance here.
     player.lose_strick = 0;

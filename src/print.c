@@ -102,6 +102,10 @@ void    push(void) {
     #endif
 }
 
+/*
+** Prints that an error occured in your algorithm
+** code. You need to find out what is wrong with your algorithm.
+*/
 void    error(player_s* player, dealer_s* dealer) {
     #ifdef  SHOW_ERROR
         dprintf(2, "\033[31mPlayer didn't end his turn.\033[0m\n");
