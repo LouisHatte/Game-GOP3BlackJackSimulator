@@ -1,4 +1,4 @@
-# Maths - Governor of Poker 3 Blackjack simulator
+# Game - Governor of Poker 3 Blackjack simulator
 
 ## Description
 
