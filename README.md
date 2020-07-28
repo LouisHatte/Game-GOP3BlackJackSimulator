@@ -63,9 +63,10 @@ You can set the initial player's balance here:
 ```
 
 ## Code your own algorithm
-You can code your own algorithm by deleting all files located in *include/algo* and *src/algo* folders and by implementing your own function with this signature:
+You can code your own algorithm by deleting all files located in *include/algo* and *src/algo* folders and by implementing your own functions with these signatures:
 
 ```C
+void    bet(player_s* player, uint8_t idx);
 void    player_turn(deck_s* deck, player_s* player, dealer_s* dealer);
 ```
 
