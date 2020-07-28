@@ -23,7 +23,7 @@ int main(int ac, char **av) {
 
     _check_args(ac, av);
 
-    player.balance = 100000000; // Set your initial player balance here.
+    player.balance = 100000000;
     player.lose_strick = 0;
     balance[0] = player.balance;
 

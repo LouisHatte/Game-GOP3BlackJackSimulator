@@ -4,7 +4,6 @@
 
 #include "person.h"
 
-// Comment these lines to hide prints.
 #define SHOW_PRINT
 #define SHOW_ERROR
 
